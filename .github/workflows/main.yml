@@ -1,6 +1,6 @@
 name: python-deployment
 
-run-name: ${{ github.actor }} - ${{ github.ref }} - ${{ github.sha }}
+run-name: ${{ github.actor }} - ${{ github.ref_name}} -${{ github.sha }}
 
 on:
   push:
@@ -10,10 +10,11 @@ on:
 
 env:
   PythonVersion: 3.8
-  DOCKER_IMAGE_NAME: todoapp
+  DOCKER_IMAGE_NAME: cicd-task-3
 
 jobs:
   python-ci:
+    # if: github.ref_name == "main"
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -59,7 +60,7 @@ jobs:
   docker-ci:
     name: Build and push image
     needs: ["python-ci"]
-    if: github.ref == 'refs/heads/main'
+    if: github.ref_name == "main"
     runs-on: ubuntu-latest
 
     steps:
@@ -77,6 +78,6 @@ jobs:
     - name: Build and push
       uses: docker/build-push-action@v6
       with:
-        context: ./src # Adjust this if Dockerfile is not in ./src
+        context: ./src
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ env.DOCKER_IMAGE_NAME }}:${{ github.sha }}
