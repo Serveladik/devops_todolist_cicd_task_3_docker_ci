@@ -1,6 +1,6 @@
 name: python-deployment
 
-run-name: ${{ github.actor }} - ${{ github.ref_name}} -${{ github.sha }}
+run-name: ${{ github.actor }} - ${{ github.ref}} -${{ github.sha }}
 
 on:
   push:
@@ -60,7 +60,7 @@ jobs:
   docker-ci:
     name: Build and push image
     needs: ["python-ci"]
-    if: github.ref_name == "main"
+    if: github.ref == "main"
     runs-on: ubuntu-latest
 
     steps:
