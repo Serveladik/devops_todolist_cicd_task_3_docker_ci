@@ -14,7 +14,7 @@ env:
 
 jobs:
   python-ci:
-    # if: github.ref_name == "main"
+    # if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -60,7 +60,7 @@ jobs:
   docker-ci:
     name: Build and push image
     needs: ["python-ci"]
-    if: github.ref == "main"
+    if: github.ref == "refs/heads/main"
     runs-on: ubuntu-latest
 
     steps:
